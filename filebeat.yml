@@ -10,6 +10,9 @@ filebeat:
     -
       paths:
         - /mnt/logs/prizma-middleend-log
+
+      input_type: log
+
       document_type: prizma_mid
 
   registry_file: /var/lib/filebeat/registry
