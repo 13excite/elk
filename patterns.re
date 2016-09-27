@@ -1,18 +1,22 @@
+# PARSE DATE
 MDATE_PR (\d{2}\.\d{2}\.\d{2})
 TIME_PR (\d{2}:\d{2}:\d{2})
 DATETIME_PR %{DATE} %{TIME}
 
+# PARSE TYPE LOGMSG BCKND LOG
+STANDART_MSG_BCKND ((\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$))|(Error oc(.*?)(\n|$))|(ProcessVid(.*?)(\n|$))|(Failed to(.*?)(\n|$)))
 
-QUID_PRIZMA ((\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$)))
+# PARSE TYPE LOGMSG MIDDLE LOG
+STANDART_MSG_MDDL((Zero-length(.*?)(\n|$))|(Error in chan(.*?)(\n|$))|(\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$))|(MakeOne(.*?)(\n|$))|(Event cal(.*?)(\n|$))|(Kill act(.*?)(\n|$)))
 
-PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{LOGLEVEL:loglevel_prizma})DATE_PR (\d{2}\.\d{2}\.\d{2})
+# LOGLEVEL PARSE. NOT USED STANDART %{LOGVEVEL}
+PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)
 
+# cut LOGMSG from LOGLEVEL and end line. not valid if used conjunction with PRIZMLOGLEVEL
 
 LOGMESSAGE ((TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG))(.*?)(\n|$)
 PRIZM_LOGMSG %{LOGMESSAGE}
 
-QUID_PRIZMA ((\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$)))
-
-PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)
+# complete parse for sending to elk date+loglevel+ all message log
 
 FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{LOGLEVEL:loglevel_prizma})
