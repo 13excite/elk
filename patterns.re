@@ -19,4 +19,4 @@ PRIZM_LOGMSG %{LOGMESSAGE}
 
 # complete parse for sending to elk date+loglevel+ all message log
 
-FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{LOGLEVEL:loglevel_prizma})
+FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_prizma})%{GREEDYDATA:prizm_message}
