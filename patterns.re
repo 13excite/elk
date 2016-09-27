@@ -1,12 +1,15 @@
-MODULS (\[M\]|\[\d\])
-LOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)
-DATE (\d{2}\.\d{2}\.\d{2})
-TIME (\d{2}:\d{2}:\d{2})
-DATETIME %{DATE} %{TIME}
-# PID #222222
-PID (\#[1-9]+[\d]{1,})
-
-WORKER (worker \#\d{1})
+MDATE_PR (\d{2}\.\d{2}\.\d{2})
+TIME_PR (\d{2}:\d{2}:\d{2})
+DATETIME_PR %{DATE} %{TIME}
 LOGMESSAGE ((TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG))(.*?)(\n|$)
-
-PRIZMALOG %{DATETIME:timestamp_prizma} %{LOGLEVEL:loglevel_prizma} %{LOGMESSAGE:message_prizma}
+PRIZM_LOGMSG %{LOGMESSAGE}
+QUID_PRIZMA ((\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$)))
+PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)
+FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{LOGLEVEL:loglevel_prizma})DATE_PR (\d{2}\.\d{2}\.\d{2})
+TIME_PR (\d{2}:\d{2}:\d{2})
+DATETIME_PR %{DATE} %{TIME}
+LOGMESSAGE ((TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG))(.*?)(\n|$)
+PRIZM_LOGMSG %{LOGMESSAGE}
+QUID_PRIZMA ((\[QI(.*?)(\n|$))|(Quer(.*?)(\n|$)))
+PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG)
+FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{LOGLEVEL:loglevel_prizma})
