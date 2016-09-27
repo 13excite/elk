@@ -1,0 +1,29 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /mnt/logs/prizma-backend-log
+
+      input_type: log
+
+      document_type: prizma_back
+    -
+      paths:
+        - /mnt/logs/prizma-middleend-log
+      document_type: prizma_mid
+
+  registry_file: /var/lib/filebeat/registry
+
+output:
+  logstash:
+    hosts: ["localhost:2744"]
+    bulk_max_size: 1024
+
+    tls:
+      certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+
+shipper:
+
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB:
