@@ -14,7 +14,7 @@ PRIZMLOGLEVEL (TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|
 
 # cut LOGMSG from LOGLEVEL and end line. not valid if used conjunction with PRIZMLOGLEVEL
 
-LOGMESSAGE ((TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERR?(?:OR)?|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG))(.*?)(\n|$)
+LOGMESSAGE ((TRACE|DEBUG|NOTICE|INFO|WARN?(?:ING)?|ERROR|CRIT?(?:ICAL)?|FATAL|SEVERE|EMERG))(.*?)(\n|$)
 PRIZM_LOGMSG %{LOGMESSAGE}
 
 # complete parse for sending to elk date+loglevel+ all message log
