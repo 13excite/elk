@@ -20,3 +20,9 @@ PRIZM_LOGMSG %{LOGMESSAGE}
 # complete parse for sending to elk date+loglevel+ all message log
 
 FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_prizma})%{GREEDYDATA:prizm_message}
+
+
+# BACKEND
+# REQUEST BACKEND 
+REQUEST_PRZ (POST)
+STYLE_TYPE (baw)|(blueice)|(bluewave)|(cartoon1)|(chuk)|(farm)|(fire)|(hsn)|(ink)|(mononoke_cleaned)|(mosaic_512)|(mosaic_fast)|(mosaic_violet)|(neonpencil)|(picasso)|(spiral)|(zen)
