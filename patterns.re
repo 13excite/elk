@@ -26,8 +26,8 @@ FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_pri
 # REQUEST BACKEND #################
 REQUEST_PRZ (POST)
 STYLE_TYPE (baw)|(blueice)|(bluewave)|(cartoon1)|(chuk)|(farm)|(fire)|(hsn)|(ink)|(mononoke_cleaned)|(mosaic_512)|(mosaic_fast)|(mosaic_violet)|(neonpencil)|(picasso)|(spiral)|(zen)
+QID_PRIZM (([\da-z]{16}))
+
 WORK_ID_PRIZM (([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*))
-# TEST QID, need cut
-QID_PRIZM (\d|\w){16}\]
-# QIQ TEST 2
-QID_TWO \[([\da-z]{16})\]
+
+
