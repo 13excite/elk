@@ -37,13 +37,17 @@ SQUARE (true)|(false)
 # REQUEST VIDO 
 # RETURN VIDEO # FINALLY# stage 1-4
 QUERY_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[&_qid=%{QID_PR:prizm_qid}.+ is being sent to worker #\d
-REQUEST_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} VIDEO, STYLE type: %{STYLE_TYPE_VIDEO:prizm_type_video}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, SQUARE: %{SQUARE:square}
+REQUEST_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} VIDEO, STYLE type: %{STYLE_TYPE_VIDEO:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, SQUARE: %{SQUARE:square}
 RETURN_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PRIZM:prizm_qid}\] %{SYSLOG5424SD} VIDEO return data size: %{NUMBER:data_size}, elapsed: %{NUMBER:elapsed}ms
 RETURN_VIDEO_BCKND_PUT_RESULT %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Counter value after decrement: 3 \(work_id: %{WORK_ID_PRIZM:prizm_work_id}\)
 RETURN_VIDEO_BCKND_LAST %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[qid="%{QID_PR:prizm_qid}"\] %{SYSLOG5424SD} answer has been received from worker #1; frontend: %{IP:frontend_ip} times: total\(%{NUMBER:times_total} ms\): queue\(%{NUMBER:times_queue} ms\) \+ worker\(%{NUMBER:times_worker} ms\) answer length: %{NUMBER:answer_lenght}
 
 # NOT VIDEO 
 # FIRST Query equally request VIDEO
+# STEP 2 non VIDEO
+%{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, LUA_MEM: %{NUMBER:lua_mem} Kb
+# STEP 3 return data non video
+ 
 
 
 
