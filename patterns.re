@@ -25,8 +25,8 @@ PRIZM_LOGMSG %{LOGMESSAGE}
 FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_prizma})%{GREEDYDATA:prizm_message}
 
 	
-# BACKEND############### INFO LOGLEVEL ##########################################################
-# REQUEST BACKEND #################
+# #####################BACKEND############### INFO LOGLEVEL ##########################################################
+# BACKEND AND MIDDLEEND PATTERN #################
 REQUEST_PRZ (POST)
 STYLE_TYPE (baw)|(blueice)|(bluewave)|(cartoon1)|(chuk)|(farm)|(fire)|(hsn)|(ink)|(mononoke_cleaned)|(mosaic_512)|(mosaic_fast)|(mosaic_violet)|(neonpencil)|(picasso)|(spiral)|(zen)
 STYLE_TYPE_VIDEO (\w+_video)
@@ -66,6 +66,19 @@ PROC_VIDEO_GPU_TIME %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{P
 # STEP 3 equally for iamge and video
 # STEP 4 too
 # and step 5
+
+# ################!!!!!!!!!!!!!!MIDDLEND!!!!!!!!!!!#######################
+QUERY_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[&_qid=%{QID_PR:prizm_qid}.+ is being sent to worker #\d
+DO_PROCESS_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Start process \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; boomerang: %{NUMBER:boomerang}\)
+MERGE_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Successfully merged \(chunk_num: %{NUMBER:chunk_num}; elapsed: %{NUMBER:elapsed}ms\)
+ANSWER_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[qid="%{QID_PR:prizm_qid}"\] %{SYSLOG5424SD} %{DATA}; frontend: %{IP:frontend_ip} times: total\(%{NUMBER:times_total} ms\): queue\(%{NUMBER:times_queue} ms\) \+ worker\(%{NUMBER:times_worker} ms\) answer length: %{NUMBER:answer_lenght}
+
+# LOG TYPE 2
+PROC_DO_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Start process \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; boomerang: %{NUMBER:boomerang}; media_type: %{WORD:media_type}; style: %{WORD:style}\)
+AVSTREAM_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[mp4 @ %{BASE16FLOAT}\] %{GREEDYDATA:message_avstream}
+
+
+
 
 
 
