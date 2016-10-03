@@ -35,7 +35,7 @@ QID_PRIZM (([\da-z]{16}))
 WORK_ID_PRIZM (([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*))
 SQUARE (true)|(false)
 
-# REQUEST VIDO 
+# REQUEST VIDEO 
 # RETURN VIDEO # FINALLY# stage 1-4
 QUERY_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[&_qid=%{QID_PR:prizm_qid}.+ is being sent to worker #\d
 REQUEST_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} %{WORD}, STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}?%{GREEDYDATA}
@@ -75,8 +75,10 @@ ANSWER_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOG
 
 # LOG TYPE 2
 PROC_DO_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Start process \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; boomerang: %{NUMBER:boomerang}; media_type: %{WORD:media_type}; style: %{WORD:style}\)
-AVSTREAM_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[mp4 @ %{BASE16FLOAT}\] %{GREEDYDATA:message_avstream}
+AVSTREAM_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[mp4 @ %{BASE16FLOAT:mp4}\] %{GREEDYDATA:message_avstream}
 
+# WARNING level 
+WARN_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Bad chunk \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; %{GREEDYDATA}
 
 
 
