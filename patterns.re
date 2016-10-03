@@ -25,11 +25,12 @@ PRIZM_LOGMSG %{LOGMESSAGE}
 FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_prizma})%{GREEDYDATA:prizm_message}
 
 	
-# BACKEND###############
+# BACKEND############### INFO LOGLEVEL ##########################################################
 # REQUEST BACKEND #################
 REQUEST_PRZ (POST)
 STYLE_TYPE (baw)|(blueice)|(bluewave)|(cartoon1)|(chuk)|(farm)|(fire)|(hsn)|(ink)|(mononoke_cleaned)|(mosaic_512)|(mosaic_fast)|(mosaic_violet)|(neonpencil)|(picasso)|(spiral)|(zen)
 STYLE_TYPE_VIDEO (\w+_video)
+STYLE_TYPE_IMG (\w+ _image)
 QID_PRIZM (([\da-z]{16}))
 WORK_ID_PRIZM (([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*))
 SQUARE (true)|(false)
@@ -37,17 +38,35 @@ SQUARE (true)|(false)
 # REQUEST VIDO 
 # RETURN VIDEO # FINALLY# stage 1-4
 QUERY_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[&_qid=%{QID_PR:prizm_qid}.+ is being sent to worker #\d
-REQUEST_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} VIDEO, STYLE type: %{STYLE_TYPE_VIDEO:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, SQUARE: %{SQUARE:square}
-RETURN_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PRIZM:prizm_qid}\] %{SYSLOG5424SD} VIDEO return data size: %{NUMBER:data_size}, elapsed: %{NUMBER:elapsed}ms
-RETURN_VIDEO_BCKND_PUT_RESULT %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Counter value after decrement: 3 \(work_id: %{WORK_ID_PRIZM:prizm_work_id}\)
-RETURN_VIDEO_BCKND_LAST %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[qid="%{QID_PR:prizm_qid}"\] %{SYSLOG5424SD} answer has been received from worker #1; frontend: %{IP:frontend_ip} times: total\(%{NUMBER:times_total} ms\): queue\(%{NUMBER:times_queue} ms\) \+ worker\(%{NUMBER:times_worker} ms\) answer length: %{NUMBER:answer_lenght}
-
-# NOT VIDEO 
+REQUEST_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} %{WORD}, STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}?%{GREEDYDATA}
+%{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} %{DATA} %{NUMBER:data_size}, elapsed: %{NUMBER:elapsed}ms
+RETURN_VIDEO_BCKND_PUT_RESULT %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} %{DATA}: %{NUMBER} \(work_id: %{WORK_ID_PRIZM:prizm_work_id}\)
+RETURN_VIDEO_BCKND_LAST %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: Query \[qid="%{QID_PR:prizm_qid}"\] %{SYSLOG5424SD} %{DATA}; frontend: %{IP:frontend_ip} times: total\(%{NUMBER:times_total} ms\): queue\(%{NUMBER:times_queue} ms\) \+ worker\(%{NUMBER:times_worker} ms\) answer length: %{NUMBER:answer_lenght}
+# #########  NO VIDEO  ###### 
 # FIRST Query equally request VIDEO
-# STEP 2 non VIDEO
-%{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, LUA_MEM: %{NUMBER:lua_mem} Kb
-# STEP 3 return data non video
- 
+# STEP 2 NO VIDEo #######style-type need used pettern WORD#######
+REQUEST_NO_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, LUA_MEM: %{NUMBER:lua_mem} Kb
+# STEP 3 return data NO VIDEO
+RETURN_NO_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} return data size: %{NUMBER:data_size}, LUA_MEM\(after GC\): %{NUMBER:lua_mem} Kb
+# STEP 4 equally RETURN-VIDEO-BCKND-LAST
+
+# ERROR REQUEST BACKEND ##########
+ERROR_BCKND_REQUEST %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: \[QID=%{QID_PR:prizm_qid}\] %{GREEDYDATA}
+
+# incoming connection BACKEND
+INCOM_CONNECT_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: incoming connection: %{IPPORT:incoming_connect}; %{SYSLOG5424SD:hz_che}
+
+# process video & image
+PROC_VIDEO_GPU_TIME %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prism_loglevel}: %{WORD:type_process}: GPUTime: %{NUMBER:gpu_time}
+#  ProcessVideo and image: required width:high will be made later 
+
+# ####### IMAGE ##########
+# FIRST Query equally request VIDEO
+# STEP 2 equally for image and video
+# STEP 3 equally for iamge and video
+# STEP 4 too
+# and step 5
+
 
 
 
