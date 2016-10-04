@@ -46,7 +46,7 @@ RETURN_VIDEO_BCKND_LAST %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\]
 # #########  NO VIDEO  ###### 
 # FIRST Query equally request VIDEO
 # STEP 2 NO VIDEo #######style-type need used pettern WORD#######
-REQUEST_NO_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{REQUEST_PRZ:prizm_request} data len: %{NUMBER:data_len}, LUA_MEM: %{NUMBER:lua_mem} Kb
+REQUEST_NO_VIDEO_BCKND #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{WORD:prizm_request} data len: %{NUMBER:data_len}, SQUARE: %{WORD:square}, LUA_MEM: %{NUMBER:lua_mem} Kb
 # STEP 3 return data NO VIDEO
 RETURN_NO_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} return data size: %{NUMBER:data_size}, LUA_MEM\(after GC\): %{NUMBER:lua_mem} Kb
 # STEP 4 equally RETURN-VIDEO-BCKND-LAST
