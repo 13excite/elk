@@ -28,10 +28,11 @@ FULL_PRIZMA_LOG (%{DATETIME_PR:timestamp_prizma}).*(%{PRIZMLOGLEVEL:loglevel_pri
 # #####################BACKEND############### INFO LOGLEVEL ##########################################################
 # BACKEND AND MIDDLEEND PATTERN #################
 REQUEST_PRZ (POST)
+IPPORT %{IP}:%{POSINT:port}
 STYLE_TYPE (baw)|(blueice)|(bluewave)|(cartoon1)|(chuk)|(farm)|(fire)|(hsn)|(ink)|(mononoke_cleaned)|(mosaic_512)|(mosaic_fast)|(mosaic_violet)|(neonpencil)|(picasso)|(spiral)|(zen)
 STYLE_TYPE_VIDEO (\w+_video)
 STYLE_TYPE_IMG (\w+ _image)
-QID_PRIZM (([\da-z]{16}))
+QID_PR (([\da-z]{16}))
 WORK_ID_PRIZM (([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*))
 SQUARE (true)|(false)
 
@@ -79,9 +80,3 @@ AVSTREAM_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZM
 
 # WARNING level 
 WARN_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:prizm_log_level}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Bad chunk \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; %{GREEDYDATA}
-
-
-
-
-
-
