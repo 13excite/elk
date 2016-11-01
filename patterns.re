@@ -36,6 +36,7 @@ QID_PR (([\da-z]{16}))
 WORK_ID_PRIZM (([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*)-([a-z0-9]*))
 SQUARE (true)|(false)
 
+
 # REQUEST VIDEO 
 # RETURN VIDEO # FINALLY# stage 1-4
 QUERY_VIDEO_BCKND %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: Query \[&_qid=%{QID_PR:prizm_qid}.+ is being sent to worker #\d
@@ -73,6 +74,8 @@ QUERY_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGL
 DO_PROCESS_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Start process \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; boomerang: %{NUMBER:boomerang}\)
 MERGE_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Successfully merged \(chunk_num: %{NUMBER:chunk_num}; elapsed: %{NUMBER:elapsed}ms\)
 ANSWER_MIDDL %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: Query \[qid="%{QID_PR:prizm_qid}"\] %{SYSLOG5424SD} %{DATA}; frontend: %{IP:frontend_ip} times: total\(%{NUMBER:times_total} ms\): queue\(%{NUMBER:times_queue} ms\) \+ worker\(%{NUMBER:times_worker} ms\) answer length: %{NUMBER:answer_lenght}
+
+NEW_PATTERNS_PR #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} STYLE type: %{WORD:style_type}, %{WORD:prizm_request} data len: %{NUMBER:data_len}, SQUARE: %{WORD:square}
 
 # LOG TYPE 2
 PROC_DO_MIDDLE %{WORKER:worker} #\d+	\[%{DATETIME_PR:prizm_timestamp}\] %{PRIZMLOGLEVEL:loglevel_prizma}: \[QID=%{QID_PR:prizm_qid}\] %{SYSLOG5424SD} Start process \(work_id: %{WORK_ID_PRIZM:prizm_work_id}; boomerang: %{NUMBER:boomerang}; media_type: %{WORD:media_type}; style: %{WORD:style_type}\)
